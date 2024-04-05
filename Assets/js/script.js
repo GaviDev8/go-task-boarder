@@ -5,7 +5,7 @@ let nextId = JSON.parse(localStorage.getItem("nextId")) || 1;
 // This function is to generate a unique task id
 const generateTaskId = () => {
     const id = nextId++;
-    localStorage.setItem("nextId", JSON.stringify(nextId));
+    localStorage.setItem("nextId", JSON.stringify(nextId +1));
     return id;
 };
 
@@ -92,9 +92,7 @@ const renderTaskList = () => {
 const handleAddTask= (event) => {
     event.preventDefault();
 
-    // const task = {
-    //     id: generateTaskId(),
-    // }
+    // Get form input values
     const taskTitle = $("#taskTitle").val();
     const taskDueDate = $("#taskDueDate").val();
     const taskDescription = $("#taskDescription").val();
@@ -117,11 +115,9 @@ const handleAddTask= (event) => {
     // Render the updated task list
     renderTaskList();
 
-    // Reset form fields
-    $("#taskForm")[0].reset();
-
-    // Close the modal
-    $("#formModal").modal("hide");
+    // Reset form fields and close the modal
+    document.getElementById("taskForm").reset();
+    $("#formModal").modal("hide"); // Hides the modal
 };
 
 
@@ -138,7 +134,7 @@ const handleDeleteTask = (event) => {
 // This function handles dropping a task into a new status lane
 const handleDrop = (event, ui) => {
     const taskId = ui.draggable.attr("data-task-id");
-    const newStatus = event.target.id;
+    const newStatus = event.target.id; // Corrected new status extraction
 
     for(let i = 0; i < taskList.length; i++) {
         if(taskList[i].id == parseInt(taskId)) {

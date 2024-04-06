@@ -15,11 +15,11 @@ const createTaskCard = (task) => {
     .addClass("card w-75 task card draggable my-3")
     .attr("data-task-id", task.id)
 
-    const cardHeader = $("div")
+    const cardHeader = $("<div>")
     .addClass("card-header h4")
     .text(task.title);
 
-    const cardBody = $("div")
+    const cardBody = $("<div>")
     .addClass("card-body");
 
     const cardDescription = $("<p>")
@@ -44,7 +44,7 @@ const createTaskCard = (task) => {
         if(now.isSame(taskDueDate, 'day')) {
             taskCard.addClass("bg-warning text white"); 
         } else if(now.isAfter(taskDueDate)) {
-            taskCard.addClass("bg-warning text white");
+            taskCard.addClass("bg-danger text white");
             cardDeleteButton.addClass("border-light")
         }
     }
@@ -133,7 +133,7 @@ const handleDeleteTask = (event) => {
 
 // This function handles dropping a task into a new status lane
 const handleDrop = (event, ui) => {
-    const taskId = ui.draggable.attr("data-task-id");
+    const taskId = ui.draggable[0].dataset.taskId;
     const newStatus = event.target.id; // Corrected new status extraction
 
     for(let i = 0; i < taskList.length; i++) {
@@ -152,7 +152,7 @@ $(document).ready(() => {
 
     $("#taskForm").on("submit", handleAddTask);
 
-    $(".lane").draggable({
+    $(".lane").droppable({
         accept: ".draggable",
         drop: handleDrop
     });
